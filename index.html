@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cutest Page Ever!</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff5f7;
+            text-shadow: 2px 2px #990000;
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        button {
+            background-color: #ff3333;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 8px 15px rgba(255, 50, 50, 0.4);
+        }
+
+        button:hover {
+            background-color: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .note {
+            display: none;
+            background-color: #fff0f0;
+            color: #cc0000;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(204, 0, 0, 0.4);
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            max-width: 800px;
+            line-height: 1.6;
+            animation: fadeInNote 1.5s ease forwards;
+        }
+
+        .image-circle-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .circle-img {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #ff3333;
+            box-shadow: 0 0 20px rgba(255, 80, 80, 0.6);
+            transition: transform 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .circle-img:hover {
+            transform: scale(1.1);
+        }
+
+        .circle-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-frame {
+            background: linear-gradient(135deg, #ffcccc, #ff9999);
+            border: 6px solid #ff4d4d;
+            border-radius: 25px;
+            padding: 15px;
+            box-shadow: 0 0 30px rgba(255, 80, 80, 0.5);
+            width: 90%;
+            max-width: 400px;
+            animation: popIn 0.4s ease forwards;
+            position: relative;
+        }
+
+        .video-frame video {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(255, 80, 80, 0.8);
+            z-index: 10;
+        }
+
+        .tictactoe-board .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tictactoe-board .cell {
+            width: 100px;
+            height: 100px;
+            background: #fff0f0;
+            color: #cc0000;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .input-popup {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff0f0;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 80, 80, 0.4);
+            animation: popIn 0.5s ease-in-out;
+        }
+
+        .input-popup input {
+            padding: 0.5rem;
+            border: 1px solid #ff6666;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-popup button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            background-color: #ff3333;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .winner-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .winner-message {
+            background: linear-gradient(135deg, #ffb3d9, #ff99cc);
+            border: 6px solid #ff4d4d;
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(255, 80, 80, 0.5);
+            width: 90%;
+            max-width: 400px;
+            animation: popIn 0.4s ease forwards;
+            position: relative;
+            text-align: center;
+            color: #cc0000;
+        }
+
+        .winner-message h2 {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .winner-message p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .winner-message button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .winner-message button:hover {
+            transform: scale(1.05);
+        }
+
+        .winner-video-frame {
+            background: linear-gradient(135deg, #ffcccc, #ff9999);
+            border: 6px solid #ff4d4d;
+            border-radius: 25px;
+            padding: 15px;
+            box-shadow: 0 0 30px rgba(255, 80, 80, 0.5);
+            width: 90%;
+            max-width: 450px;
+            animation: popIn 0.4s ease forwards;
+            position: relative;
+        }
+
+        .winner-video-frame video {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .game-status {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: #fff5f7;
+            text-shadow: 1px 1px #990000;
+        }
+
+        .rps-game {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rps-frame {
+            background: linear-gradient(135deg, #ffb3d9, #ff99cc);
+            border: 6px solid #ff4d4d;
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(255, 80, 80, 0.5);
+            width: 90%;
+            max-width: 500px;
+            animation: popIn 0.4s ease forwards;
+            position: relative;
+            text-align: center;
+            color: #cc0000;
+        }
+
+        .rps-frame h2 {
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .rps-choices {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .rps-choice {
+            background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+            border: 3px solid #ff4d4d;
+            border-radius: 15px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 2rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .rps-choice:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 80, 80, 0.6);
+        }
+
+        .rps-result {
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .rps-score {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .memory-game {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .memory-frame {
+            background: linear-gradient(135deg, #ffb3d9, #ff99cc);
+            border: 6px solid #ff4d4d;
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(255, 80, 80, 0.5);
+            width: 90%;
+            max-width: 600px;
+            animation: popIn 0.4s ease forwards;
+            position: relative;
+            text-align: center;
+            color: #cc0000;
+        }
+
+        .memory-frame h2 {
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 2rem 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .memory-card {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+            border: 3px solid #ff4d4d;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 80, 80, 0.6);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card-front,
+        .memory-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .memory-card-front {
+            background: linear-gradient(135deg, #ff9999, #ff6666);
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .memory-card-back {
+            background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+            transform: rotateY(180deg);
+        }
+
+        .memory-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .memory-result {
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInNote {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎂 HAPPY BIRTHDAY JAAN 🎂</h1>
+    
+    <div class="button-container">
+        <button onclick="showNote()">For You ❤️</button>
+        <button onclick="showVideo()">Pressssssss Nahhhhhh</button>
+        <button onclick="playTicTacToe()">Play Tic-Tac-Toe 🎮</button>
+        <button onclick="showInput()">Dabaeye Naa Jee 💌</button>
+        <button onclick="changeBackground()">Change Colors 🌈</button>
+    </div>
+
+    <div class="note" id="note">
+        <button class="close-btn" onclick="closeNote()" style="position: absolute; top: 10px; right: 10px;">×</button>
+        <h2>💖 A Special Message 💖</h2>
+        <p>Happy birthday Manalee ❤❤ the love of my life 😘🤗🎉🎊🎁🎂
+        
+        My special one i am so so blessed that you were born on this day 18 years ago☺ and destiny sent you to me 😍 so that we
+        could fall in love together and experience the rarest treasure this life has to offer and that is love 😘.Let me tell
+        you once again my jaaaan 🥰that i am so so madly in love with you and so crazy about you that i would do anything for us
+        to be together and you to be the happiest🤗 woman ♀ in the whole planet 🌎 Earth.
+        
+        Baby i know you are the person who is the least appreciated🥺 with respect to the sacrifices and hardwork you do for the
+        people you love and care .....so let me tell you this ......THANK YOU SO MUCH MANALEE for all your sacrifices and care
+        and kindness and love you gave to people who are close to you and even to people who needed you at times and without any
+        selfish interest and alterior motive . You have made people's life easier even when by doing so you faced so many unsaid
+        problems that u never tell anyone .....so my jaan 😍 THANK YOU SO SO MUCH from all the people's side and by my side
+        .....thnks for being the one angel 😇 in ever
+        
+        You know what Manalee......you can be tough at times .....tough to handle .....even sometimes tough to understand but i
+        love to handle you ....deep down i love your nakhre ,shaitani, paaglpn everything re they make me fall for you again and
+        again . When i understand you your thoughts and try to know your side then just one thought comes to my mind everytime
+        that Oh! God what have you done 🥺 you sent the most innocent,true,pure and loving human in my life just to give me more
+        guilt that sometime by just not understanding you how much wrong i say to you and do to you 😞😞
+        
+        Let me tell you something else MANALEE the relationship we have is the most purest and the most beautiful thing that i
+        have ever seen or felt i my entire life and this is all because of you . The way you care , the way you fikar ,the way
+        you kiss ,the way you hug me ,the way you hold my hand ,the way you cry for me,the way you smile at me ,the way you look
+        at me ,the way you do romance with me and become my naughty wild cat 😺,the way share things with me, the way you have
+        fun with me like frnds , the way you hit me like anything ,the way you calm me down , the way you understand me bc
+        everything bc every single fuking thing that you do ..the way you do .....for me makes me go more and more crazy for you
+        re ...and makes this imperfect guy and this relationship PERFECT ....MAKES IT SO SO PURE THAT I WILL ALWAYS BE GRATEFUL
+        TO YOU ❣.
+        Just be with me my jaaan 😘 my wifey 😘 i will fullfill my each and every promise that i have made to you till now
+        .....i remember each and everyone of them ☺....just like i made the promise to give u every possible emotional jolts
+        possible 😁......
+        Happiest birthday to you my wifey 🎆 ❤... I wish that you have the most epic and most adventurous rollercoaster 🎢 life
+        ....ever 💖......have lots and lots of fun and live a complete life ....with everything that makes ones life truly
+        complete 🤗☺
+        
+        I love u 😘 so much jaan 😍 truly the luckiest guy in the whole world 🌍.....the good karma that i did here and there
+        ....gave me you ...😘 My sweet and adorable 🥰 Queen 👑...i will love u till the end of this universe 😫😭🥺......
+        
+        Happy birthday again 🎉 🎉
+        ♀Special one♀ 💖❤❣ 🤗💕</p>
+    </div>
+
+    <div class="image-circle-container">
+        <div class="circle-img" onclick="playRPSGame()">
+            <img src="img1.jpg" 
+                alt="Cute cat" onerror="this.src='https://via.placeholder.com/400x400/ff9999/ffffff?text=🐱+Cat+Image'">
+        </div>
+        <div class="circle-img" onclick="playMemoryGame()">
+            <img src="img2.jpg" 
+                alt="Cute dog" onerror="this.src='https://via.placeholder.com/400x400/ff9999/ffffff?text=🐶+Dog+Image'">
+        </div>
+    </div>
+
+    <div class="video-modal" id="videoModal">
+        <div class="video-frame">
+            <button class="close-btn" onclick="closeVideo()">×</button>
+            <video controls>
+                <source src="vid1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <div class="tictactoe-board" id="tictactoeBoard" style="display: none;">
+        <h2>🎮 Tic-Tac-Toe vs Vaibhav 🎮</h2>
+        <div class="game-status" id="gameStatus">Your turn! You are X, Vaibhav is O</div>
+        <div class="board" id="board">
+            <div class="cell" onclick="makeMove(0)"></div>
+            <div class="cell" onclick="makeMove(1)"></div>
+            <div class="cell" onclick="makeMove(2)"></div>
+            <div class="cell" onclick="makeMove(3)"></div>
+            <div class="cell" onclick="makeMove(4)"></div>
+            <div class="cell" onclick="makeMove(5)"></div>
+            <div class="cell" onclick="makeMove(6)"></div>
+            <div class="cell" onclick="makeMove(7)"></div>
+            <div class="cell" onclick="makeMove(8)"></div>
+        </div>
+        <button onclick="resetGame()" style="margin-top: 1rem;">Reset Game 🔄</button>
+        <button onclick="closeGame()" style="margin-top: 1rem;">Close Game ❌</button>
+    </div>
+
+    <div class="input-popup" id="inputPopup">
+        <h3>💌 Type Something Special 💌</h3>
+        <p style="color: #ff4d4d; font-size: 1rem; margin-bottom: 1rem; text-align: center; font-weight: bold; background: linear-gradient(135deg, #ffe6e6, #ffcccc); padding: 0.8rem; border-radius: 10px; border: 2px solid #ff4d4d;">💡 Write "i lobe you vaibhav" for a surprise! 💡</p>
+        <input type="text" id="messageInput" placeholder="Type your special message here...">
+        <button onclick="submitMessage()">Send Message ✨</button>
+        <button onclick="closeInput()">Cancel ❌</button>
+    </div>
+
+    <div class="winner-popup" id="winnerPopup">
+        <div class="winner-message">
+            <button class="close-btn" onclick="closeWinnerPopup()" style="position: absolute; top: 10px; right: 10px;">×</button>
+            <h2 id="winnerTitle">🎉 Congratulations! 🎉</h2>
+            <p id="winnerMessage">You won the game!</p>
+            <button id="winnerButton" onclick="playWinnerVideo()">Watch Celebration Video! 🎬</button>
+        </div>
+    </div>
+
+    <div class="video-modal" id="winnerVideoModal">
+        <div class="winner-video-frame">
+            <button class="close-btn" onclick="closeWinnerVideo()">×</button>
+            <video controls id="winnerVideo">
+                <source src="vid2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <div class="rps-game" id="rpsGame">
+        <div class="rps-frame">
+            <h2>Rock Paper Scissors</h2>
+            <div class="rps-choices">
+                <div class="rps-choice" onclick="playRPS('rock')">Rock</div>
+                <div class="rps-choice" onclick="playRPS('paper')">Paper</div>
+                <div class="rps-choice" onclick="playRPS('scissors')">Scissors</div>
+            </div>
+            <div class="rps-result">Your choice: <span id="rpsResult"></span></div>
+            <div class="rps-score">
+                <span>You: <span id="rpsUserScore">0</span></span>
+                <span>Vaibhav: <span id="rpsComputerScore">0</span></span>
+            </div>
+            <button onclick="resetRPSGame()" style="margin: 0.5rem;">Reset Score 🔄</button>
+            <button onclick="closeRPS()">Close Game ❌</button>
+        </div>
+    </div>
+
+    <div class="winner-popup" id="rpsWinnerPopup">
+        <div class="winner-message">
+            <button class="close-btn" onclick="closeRPSWinnerPopup()" style="position: absolute; top: 10px; right: 10px;">×</button>
+            <h2 id="rpsWinnerTitle">🎉 Result! 🎉</h2>
+            <p id="rpsWinnerMessage">Game result here!</p>
+            <button id="rpsWinnerButton" onclick="closeRPSWinnerPopup()">Action Button</button>
+        </div>
+    </div>
+
+    <div class="video-modal" id="rpsWinnerVideoModal">
+        <div class="winner-video-frame">
+            <button class="close-btn" onclick="closeRPSWinnerVideo()">×</button>
+            <video controls id="rpsWinnerVideo">
+                <source src="vid3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <div class="memory-game" id="memoryGame">
+        <div class="memory-frame">
+            <h2>🧠 Memory Match 🧠</h2>
+            <div class="memory-grid" id="memoryGrid">
+                <!-- Memory cards will be dynamically generated -->
+            </div>
+            <div class="memory-stats">
+                <span>Moves: <span id="memoryMoves">0</span></span>
+                <span>Matches: <span id="memoryMatches">0</span></span>
+            </div>
+            <div class="memory-result">Result: <span id="memoryResult"></span></div>
+            <button onclick="resetMemoryGame()">Reset Game 🔄</button>
+            <button onclick="closeMemoryGame()">Close Game ❌</button>
+        </div>
+    </div>
+
+    <div class="winner-popup" id="memoryWinnerPopup">
+        <div class="winner-message">
+            <button class="close-btn" onclick="closeMemoryWinnerPopup()" style="position: absolute; top: 10px; right: 10px;">×</button>
+            <h2 id="memoryWinnerTitle">🎉 Result! 🎉</h2>
+            <p id="memoryWinnerMessage">Game result here!</p>
+            <button id="memoryWinnerButton" onclick="closeMemoryWinnerPopup()">Action Button</button>
+        </div>
+    </div>
+
+    <div class="video-modal" id="memoryWinnerVideoModal">
+        <div class="winner-video-frame">
+            <button class="close-btn" onclick="closeMemoryWinnerVideo()">×</button>
+            <video controls id="memoryWinnerVideo">
+                <source src="vid4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        let currentPlayer = 'X'; // User is X, Computer is O
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+        let backgrounds = [
+            'linear-gradient(135deg, #ff4d4d, #ff1a1a)',
+            'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+            'linear-gradient(135deg, #ff9a9e, #fecfef)',
+            'linear-gradient(135deg, #a8edea, #fed6e3)',
+            'linear-gradient(135deg, #ffecd2, #fcb69f)',
+            'linear-gradient(135deg, #ff9a9e, #fad0c4)'
+        ];
+        let currentBgIndex = 0;
+
+        // Memory Game Variables
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let totalMoves = 0;
+        let canFlip = true;
+        let gameStartTime = 0;
+        let gameTimer = null;
+
+        const memoryEmojis = ['🐱', '🐶', '🐰', '🐼', '🐨', '🐯', '🦊', '🐸'];
+
+        function showNote() {
+            const note = document.getElementById('note');
+            note.style.display = 'block';
+        }
+
+        function closeNote() {
+            const note = document.getElementById('note');
+            note.style.display = 'none';
+        }
+
+        function showVideo() {
+            const modal = document.getElementById('videoModal');
+            modal.style.display = 'flex';
+            const video = modal.querySelector('video');
+            video.src = 'vid1.mp4';
+            if (video) video.play();
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            modal.style.display = 'none';
+            const video = modal.querySelector('video');
+            if (video) video.pause();
+        }
+
+        function playTicTacToe() {
+            // Close text input popup if it's open
+            const inputPopup = document.getElementById('inputPopup');
+            if (inputPopup.style.display === 'flex') {
+                inputPopup.style.display = 'none';
+                document.getElementById('messageInput').value = '';
+            }
+            
+            const board = document.getElementById('tictactoeBoard');
+            board.style.display = 'block';
+            resetGame();
+        }
+
+        function closeGame() {
+            const board = document.getElementById('tictactoeBoard');
+            board.style.display = 'none';
+        }
+
+        function makeMove(index) {
+            if (gameBoard[index] === '' && gameActive && currentPlayer === 'X') {
+                // User's move
+                gameBoard[index] = 'X';
+                document.querySelectorAll('.cell')[index].textContent = 'X';
+                document.querySelectorAll('.cell')[index].style.color = '#ff4d4d';
+                
+                if (checkWinner('X')) {
+                    showWinnerPopup('🎉 You Win! 🎉', 'Congratulations! You beat Vaibhav! 🌟', true);
+                    gameActive = false;
+                    return;
+                } else if (gameBoard.every(cell => cell !== '')) {
+                    showWinnerPopup('🤝 It\'s a Tie! 🤝', 'Great game! We are evenly matched! 🎮', false);
+                    gameActive = false;
+                    return;
+                }
+                
+                // Computer's turn
+                currentPlayer = 'O';
+                updateGameStatus('Wait, Vaibhav is thinking... 🤔');
+                
+                setTimeout(() => {
+                    makeComputerMove();
+                }, 800);
+            }
+        }
+
+        function makeComputerMove() {
+            if (!gameActive) return;
+            
+            // Easy AI: Mostly random moves with occasional smart moves
+            let move = findEasyMove();
+            
+            if (move !== -1) {
+                gameBoard[move] = 'O';
+                document.querySelectorAll('.cell')[move].textContent = 'O';
+                document.querySelectorAll('.cell')[move].style.color = '#4d4dff';
+                
+                if (checkWinner('O')) {
+                    showWinnerPopup('😅 You Lose! 😅', 'Oops! Vaibhav got lucky this time! Try again! 💪', false);
+                    gameActive = false;
+                    return;
+                } else if (gameBoard.every(cell => cell !== '')) {
+                    showWinnerPopup('🤝 It\'s a Tie! 🤝', 'Great game! We are evenly matched! 🎮', false);
+                    gameActive = false;
+                    return;
+                }
+                
+                currentPlayer = 'X';
+                updateGameStatus('Your turn! You are X, Vaibhav is O');
+            }
+        }
+
+        function findEasyMove() {
+            // 70% chance of making a random move (making it easier for user)
+            if (Math.random() < 0.7) {
+                const availableMoves = gameBoard.map((cell, index) => cell === '' ? index : -1).filter(i => i !== -1);
+                if (availableMoves.length > 0) {
+                    return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                }
+            }
+            
+            // 30% chance of making a smart move
+            // First, try to win (but rarely)
+            for (let i = 0; i < 9; i++) {
+                if (gameBoard[i] === '' && Math.random() < 0.3) {
+                    gameBoard[i] = 'O';
+                    if (checkWinner('O')) {
+                        gameBoard[i] = '';
+                        return i;
+                    }
+                    gameBoard[i] = '';
+                }
+            }
+            
+            // Sometimes block user (but not always)
+            for (let i = 0; i < 9; i++) {
+                if (gameBoard[i] === '' && Math.random() < 0.4) {
+                    gameBoard[i] = 'X';
+                    if (checkWinner('X')) {
+                        gameBoard[i] = '';
+                        return i;
+                    }
+                    gameBoard[i] = '';
+                }
+            }
+            
+            // Sometimes take center
+            if (gameBoard[4] === '' && Math.random() < 0.5) return 4;
+            
+            // Sometimes take corners
+            const corners = [0, 2, 6, 8];
+            const availableCorners = corners.filter(i => gameBoard[i] === '');
+            if (availableCorners.length > 0 && Math.random() < 0.6) {
+                return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+            }
+            
+            // Finally, any available move
+            const availableMoves = gameBoard.map((cell, index) => cell === '' ? index : -1).filter(i => i !== -1);
+            if (availableMoves.length > 0) {
+                return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+            }
+            
+            return -1;
+        }
+
+        function checkWinner(player) {
+            const winConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6] // diagonals
+            ];
+
+            return winConditions.some(condition => {
+                return condition.every(index => {
+                    return gameBoard[index] === player;
+                });
+            });
+        }
+
+        function showWinnerPopup(title, message, isUserWin) {
+            document.getElementById('winnerTitle').textContent = title;
+            document.getElementById('winnerMessage').textContent = message;
+            
+            const winnerButton = document.getElementById('winnerButton');
+            if (isUserWin) {
+                // User won - show celebration video button
+                winnerButton.textContent = 'Watch Celebration Video! 🎬';
+                winnerButton.onclick = playWinnerVideo;
+            } else {
+                // User lost or tied - show try again button
+                winnerButton.textContent = 'Try Again! 🔄';
+                winnerButton.onclick = tryAgain;
+            }
+            
+            document.getElementById('winnerPopup').style.display = 'flex';
+        }
+
+        function tryAgain() {
+            closeWinnerPopup();
+            resetGame();
+        }
+
+        function closeWinnerPopup() {
+            document.getElementById('winnerPopup').style.display = 'none';
+        }
+
+        function playWinnerVideo() {
+            closeWinnerPopup();
+            document.getElementById('winnerVideoModal').style.display = 'flex';
+            const video = document.getElementById('winnerVideo');
+            if (video) video.play();
+        }
+
+        function closeWinnerVideo() {
+            document.getElementById('winnerVideoModal').style.display = 'none';
+            const video = document.getElementById('winnerVideo');
+            if (video) video.pause();
+        }
+
+        function updateGameStatus(status) {
+            document.getElementById('gameStatus').textContent = status;
+        }
+
+        function resetGame() {
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.textContent = '';
+                cell.style.color = '#cc0000';
+            });
+            updateGameStatus('Your turn! You are X, Vaibhav is O');
+        }
+
+        function showInput() {
+            // Close any open modals first
+            closeAllModals();
+            
+            const popup = document.getElementById('inputPopup');
+            popup.style.display = 'flex';
+        }
+
+        function closeAllModals() {
+            // Close Tic-Tac-Toe game
+            const tictactoeBoard = document.getElementById('tictactoeBoard');
+            if (tictactoeBoard.style.display === 'block') {
+                tictactoeBoard.style.display = 'none';
+            }
+            
+            // Close video modal and pause video
+            const videoModal = document.getElementById('videoModal');
+            if (videoModal.style.display === 'flex') {
+                videoModal.style.display = 'none';
+                const video = videoModal.querySelector('video');
+                if (video) video.pause();
+            }
+            
+            // Close winner video modal and pause video
+            const winnerVideoModal = document.getElementById('winnerVideoModal');
+            if (winnerVideoModal.style.display === 'flex') {
+                winnerVideoModal.style.display = 'none';
+                const video = document.getElementById('winnerVideo');
+                if (video) video.pause();
+            }
+            
+            // Close winner popup
+            const winnerPopup = document.getElementById('winnerPopup');
+            if (winnerPopup.style.display === 'flex') {
+                winnerPopup.style.display = 'none';
+            }
+            
+            // Close love note
+            const note = document.getElementById('note');
+            if (note.style.display === 'block') {
+                note.style.display = 'none';
+            }
+            
+            // Close RPS game
+            const rpsGame = document.getElementById('rpsGame');
+            if (rpsGame.style.display === 'flex') {
+                rpsGame.style.display = 'none';
+            }
+            
+            // Close RPS winner popup
+            const rpsWinnerPopup = document.getElementById('rpsWinnerPopup');
+            if (rpsWinnerPopup.style.display === 'flex') {
+                rpsWinnerPopup.style.display = 'none';
+            }
+            
+            // Close RPS winner video modal and pause video
+            const rpsWinnerVideoModal = document.getElementById('rpsWinnerVideoModal');
+            if (rpsWinnerVideoModal.style.display === 'flex') {
+                rpsWinnerVideoModal.style.display = 'none';
+                const video = document.getElementById('rpsWinnerVideo');
+                if (video) video.pause();
+            }
+            
+            // Close Memory game
+            const memoryGame = document.getElementById('memoryGame');
+            if (memoryGame.style.display === 'flex') {
+                memoryGame.style.display = 'none';
+                if (gameTimer) {
+                    clearInterval(gameTimer);
+                    gameTimer = null;
+                }
+            }
+            
+            // Close Memory winner popup
+            const memoryWinnerPopup = document.getElementById('memoryWinnerPopup');
+            if (memoryWinnerPopup.style.display === 'flex') {
+                memoryWinnerPopup.style.display = 'none';
+            }
+            
+            // Close Memory winner video modal and pause video
+            const memoryWinnerVideoModal = document.getElementById('memoryWinnerVideoModal');
+            if (memoryWinnerVideoModal.style.display === 'flex') {
+                memoryWinnerVideoModal.style.display = 'none';
+                const video = document.getElementById('memoryWinnerVideo');
+                if (video) video.pause();
+            }
+            
+            // Pause all videos to ensure none play in background
+            const allVideos = document.querySelectorAll('video');
+            allVideos.forEach(video => {
+                video.pause();
+            });
+        }
+
+        function closeInput() {
+            const popup = document.getElementById('inputPopup');
+            popup.style.display = 'none';
+            document.getElementById('messageInput').value = '';
+        }
+
+        function submitMessage() {
+            const message = document.getElementById('messageInput').value.trim().toLowerCase();
+            if (message !== '') {
+                if (message === 'i lobe you vaibhav') {
+                    // Show special video for the correct message
+                    closeInput();
+                    showSpecialVideo();
+                } else {
+                    alert('💌 Message sent: "' + document.getElementById('messageInput').value + '" 💌');
+                    closeInput();
+                }
+            } else {
+                alert('Please enter a message! 💕');
+            }
+        }
+
+        function showSpecialVideo() {
+            const modal = document.getElementById('videoModal');
+            modal.style.display = 'flex';
+            const video = modal.querySelector('video');
+            video.src = 'vid5.mp4';
+            if (video) video.play();
+        }
+
+        function changeBackground() {
+            currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
+            document.body.style.background = backgrounds[currentBgIndex];
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const videoModal = document.getElementById('videoModal');
+            const inputPopup = document.getElementById('inputPopup');
+            const winnerPopup = document.getElementById('winnerPopup');
+            const winnerVideoModal = document.getElementById('winnerVideoModal');
+            const rpsGame = document.getElementById('rpsGame');
+            const rpsWinnerPopup = document.getElementById('rpsWinnerPopup');
+            const rpsWinnerVideoModal = document.getElementById('rpsWinnerVideoModal');
+            const memoryGame = document.getElementById('memoryGame');
+            const memoryWinnerPopup = document.getElementById('memoryWinnerPopup');
+            const memoryWinnerVideoModal = document.getElementById('memoryWinnerVideoModal');
+            
+            if (event.target === videoModal) {
+                closeVideo();
+            }
+            if (event.target === inputPopup) {
+                closeInput();
+            }
+            if (event.target === winnerPopup) {
+                closeWinnerPopup();
+            }
+            if (event.target === winnerVideoModal) {
+                closeWinnerVideo();
+            }
+            if (event.target === rpsGame) {
+                closeRPS();
+            }
+            if (event.target === rpsWinnerPopup) {
+                closeRPSWinnerPopup();
+            }
+            if (event.target === rpsWinnerVideoModal) {
+                closeRPSWinnerVideo();
+            }
+            if (event.target === memoryGame) {
+                closeMemoryGame();
+            }
+            if (event.target === memoryWinnerPopup) {
+                closeMemoryWinnerPopup();
+            }
+            if (event.target === memoryWinnerVideoModal) {
+                closeMemoryWinnerVideo();
+            }
+        }
+
+        // Add some fun effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add sparkle effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+        });
+
+        function playRPS(choice) {
+            const result = getRPSResult(choice);
+            document.getElementById('rpsResult').textContent = result;
+            updateRPSScore(result);
+            
+            // Show popup based on result
+            if (result.includes("You win!")) {
+                showRPSWinnerPopup('🎉 You Win! 🎉', 'Congratulations! You beat Vaibhav! 🌟', true);
+            } else if (result.includes("You lose!")) {
+                showRPSWinnerPopup('😅 You Lose! 😅', 'Oops! Vaibhav got lucky this time! Try again! 💪', false);
+            }
+            // Don't close the game automatically - let user continue playing
+        }
+
+        function getRPSResult(userChoice) {
+            const computerChoice = ['rock', 'paper', 'scissors'][Math.floor(Math.random() * 3)];
+            if (userChoice === computerChoice) {
+                return `It's a tie! You both chose ${userChoice}`;
+            } else if (
+                (userChoice === 'rock' && computerChoice === 'scissors') ||
+                (userChoice === 'paper' && computerChoice === 'rock') ||
+                (userChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return `You win! You chose ${userChoice}, Vaibhav chose ${computerChoice}`;
+            } else {
+                return `You lose! You chose ${userChoice}, Vaibhav chose ${computerChoice}`;
+            }
+        }
+
+        function updateRPSScore(result) {
+            const userScore = document.getElementById('rpsUserScore');
+            const computerScore = document.getElementById('rpsComputerScore');
+            let userScoreValue = parseInt(userScore.textContent);
+            let computerScoreValue = parseInt(computerScore.textContent);
+
+            if (result.includes("You win!")) {
+                userScoreValue++;
+            } else if (result.includes("You lose!")) {
+                computerScoreValue++;
+            }
+
+            userScore.textContent = userScoreValue;
+            computerScore.textContent = computerScoreValue;
+        }
+
+        function resetRPSGame() {
+            document.getElementById('rpsUserScore').textContent = '0';
+            document.getElementById('rpsComputerScore').textContent = '0';
+            document.getElementById('rpsResult').textContent = '';
+        }
+
+        function closeRPS() {
+            const rpsGame = document.getElementById('rpsGame');
+            rpsGame.style.display = 'none';
+        }
+
+        function playRPSGame() {
+            // Close any open modals first
+            closeAllModals();
+            
+            const rpsGame = document.getElementById('rpsGame');
+            rpsGame.style.display = 'flex';
+        }
+
+        function closeRPSWinnerPopup() {
+            document.getElementById('rpsWinnerPopup').style.display = 'none';
+        }
+
+        function closeRPSWinnerVideo() {
+            document.getElementById('rpsWinnerVideoModal').style.display = 'none';
+            const video = document.getElementById('rpsWinnerVideo');
+            if (video) video.pause();
+        }
+
+        function showRPSWinnerPopup(title, message, isUserWin) {
+            document.getElementById('rpsWinnerTitle').textContent = title;
+            document.getElementById('rpsWinnerMessage').textContent = message;
+            
+            const winnerButton = document.getElementById('rpsWinnerButton');
+            if (isUserWin) {
+                // User won - show celebration video button
+                winnerButton.textContent = 'Watch Celebration Video! 🎬';
+                winnerButton.onclick = playRPSWinnerVideo;
+            } else {
+                // User lost - show try again button
+                winnerButton.textContent = 'Try Again! 🔄';
+                winnerButton.onclick = closeRPSWinnerPopup;
+            }
+            
+            document.getElementById('rpsWinnerPopup').style.display = 'flex';
+        }
+
+        function playRPSWinnerVideo() {
+            closeRPSWinnerPopup();
+            document.getElementById('rpsWinnerVideoModal').style.display = 'flex';
+            const video = document.getElementById('rpsWinnerVideo');
+            if (video) video.play();
+        }
+
+        function playMemoryGame() {
+            // Close any open modals first
+            closeAllModals();
+            
+            const memoryGame = document.getElementById('memoryGame');
+            memoryGame.style.display = 'flex';
+            initializeMemoryGame();
+        }
+
+        function initializeMemoryGame() {
+            // Reset game state
+            memoryCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            totalMoves = 0;
+            canFlip = true;
+            gameStartTime = Date.now();
+            
+            // Create card pairs
+            const cardPairs = [...memoryEmojis, ...memoryEmojis];
+            
+            // Shuffle cards
+            for (let i = cardPairs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cardPairs[i], cardPairs[j]] = [cardPairs[j], cardPairs[i]];
+            }
+            
+            // Generate card HTML
+            const memoryGrid = document.getElementById('memoryGrid');
+            memoryGrid.innerHTML = '';
+            
+            cardPairs.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.index = index;
+                card.dataset.emoji = emoji;
+                card.onclick = () => flipCard(index);
+                
+                card.innerHTML = `
+                    <div class="memory-card-front">❓</div>
+                    <div class="memory-card-back">${emoji}</div>
+                `;
+                
+                memoryGrid.appendChild(card);
+                memoryCards.push({
+                    index: index,
+                    emoji: emoji,
+                    isFlipped: false,
+                    isMatched: false
+                });
+            });
+            
+            // Update display
+            updateMemoryStats();
+            document.getElementById('memoryResult').textContent = 'Find all the matching pairs! 🎯';
+            
+            // Start timer
+            if (gameTimer) clearInterval(gameTimer);
+            gameTimer = setInterval(updateMemoryTimer, 1000);
+        }
+
+        function flipCard(index) {
+            if (!canFlip || memoryCards[index].isFlipped || memoryCards[index].isMatched) {
+                return;
+            }
+            
+            const card = memoryCards[index];
+            const cardElement = document.querySelector(`[data-index="${index}"]`);
+            
+            // Flip the card
+            card.isFlipped = true;
+            cardElement.classList.add('flipped');
+            flippedCards.push(card);
+            
+            // Check if we have two cards flipped
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                totalMoves++;
+                updateMemoryStats();
+                
+                // Check for match
+                if (flippedCards[0].emoji === flippedCards[1].emoji) {
+                    // Match found!
+                    flippedCards[0].isMatched = true;
+                    flippedCards[1].isMatched = true;
+                    matchedPairs++;
+                    
+                    document.getElementById('memoryResult').textContent = 'Match found! 🎉';
+                    
+                    // Check if game is complete
+                    if (matchedPairs === memoryEmojis.length) {
+                        setTimeout(() => {
+                            endMemoryGame(true);
+                        }, 500);
+                    } else {
+                        setTimeout(() => {
+                            flippedCards = [];
+                            canFlip = true;
+                            document.getElementById('memoryResult').textContent = 'Great! Find more matches! 🎯';
+                        }, 1000);
+                    }
+                } else {
+                    // No match
+                    document.getElementById('memoryResult').textContent = 'No match! Try again! 💪';
+                    
+                    setTimeout(() => {
+                        // Flip cards back
+                        flippedCards.forEach(card => {
+                            card.isFlipped = false;
+                            const cardElement = document.querySelector(`[data-index="${card.index}"]`);
+                            cardElement.classList.remove('flipped');
+                        });
+                        flippedCards = [];
+                        canFlip = true;
+                        document.getElementById('memoryResult').textContent = 'Find the matching pairs! 🎯';
+                    }, 1500);
+                }
+            }
+        }
+
+        function updateMemoryStats() {
+            document.getElementById('memoryMoves').textContent = totalMoves;
+            document.getElementById('memoryMatches').textContent = matchedPairs;
+        }
+
+        function updateMemoryTimer() {
+            const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update timer display if needed
+            // You can add a timer display element if desired
+        }
+
+        function endMemoryGame(isWin) {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+            
+            const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (isWin) {
+                showMemoryWinnerPopup(
+                    '🎉 Memory Master! 🎉', 
+                    `Congratulations! You found all ${memoryEmojis.length} pairs in ${timeString} with ${totalMoves} moves! 🌟`, 
+                    true
+                );
+            } else {
+                showMemoryWinnerPopup(
+                    '😅 Time\'s Up! 😅', 
+                    `You found ${matchedPairs} pairs in ${timeString}. Try again to find them all! 💪`, 
+                    false
+                );
+            }
+        }
+
+        function showMemoryWinnerPopup(title, message, isUserWin) {
+            document.getElementById('memoryWinnerTitle').textContent = title;
+            document.getElementById('memoryWinnerMessage').textContent = message;
+            
+            const winnerButton = document.getElementById('memoryWinnerButton');
+            if (isUserWin) {
+                // User won - show celebration video button
+                winnerButton.textContent = 'Watch Celebration Video! 🎬';
+                winnerButton.onclick = playMemoryWinnerVideo;
+            } else {
+                // User lost - show try again button
+                winnerButton.textContent = 'Try Again! 🔄';
+                winnerButton.onclick = () => {
+                    closeMemoryWinnerPopup();
+                    resetMemoryGame();
+                };
+            }
+            
+            document.getElementById('memoryWinnerPopup').style.display = 'flex';
+        }
+
+        function playMemoryWinnerVideo() {
+            closeMemoryWinnerPopup();
+            document.getElementById('memoryWinnerVideoModal').style.display = 'flex';
+            const video = document.getElementById('memoryWinnerVideo');
+            if (video) video.play();
+        }
+
+        function closeMemoryWinnerVideo() {
+            document.getElementById('memoryWinnerVideoModal').style.display = 'none';
+            const video = document.getElementById('memoryWinnerVideo');
+            if (video) video.pause();
+        }
+
+        function closeMemoryWinnerPopup() {
+            document.getElementById('memoryWinnerPopup').style.display = 'none';
+        }
+
+        function resetMemoryGame() {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+            initializeMemoryGame();
+        }
+
+        function closeMemoryGame() {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+            const memoryGame = document.getElementById('memoryGame');
+            memoryGame.style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
